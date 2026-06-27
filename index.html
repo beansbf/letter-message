@@ -32,7 +32,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 40px 20px;
             overflow-x: hidden;
             position: relative;
         }
@@ -51,7 +51,7 @@
         .container {
             display: flex;
             background: var(--card-pink);
-            max-width: 900px;
+            max-width: 950px;
             width: 100%;
             border-radius: 30px;
             box-shadow: 0 10px 30px rgba(255, 179, 198, 0.4);
@@ -61,10 +61,10 @@
             z-index: 1;
         }
 
-        /* Left Side: Letter Content */
+        /* Left Side: Letter Content & Polaroid */
         .letter-side {
-            flex: 1;
-            min-width: 300px;
+            flex: 1.2;
+            min-width: 320px;
             padding: 40px;
             display: flex;
             flex-direction: column;
@@ -84,6 +84,30 @@
             line-height: 1.7;
             text-align: left;
             white-space: pre-line;
+            margin-bottom: 30px;
+        }
+
+        /* Pinterest/Polaroid Style Image Frame */
+        .polaroid-frame {
+            background: white;
+            padding: 15px 15px 35px 15px;
+            box-shadow: 0 8px 20px rgba(255, 179, 198, 0.3);
+            border-radius: 4px;
+            transform: rotate(-2deg);
+            max-width: 320px;
+            margin: 20px auto 10px auto;
+            transition: transform 0.3s ease;
+        }
+
+        .polaroid-frame:hover {
+            transform: rotate(0deg) scale(1.02);
+        }
+
+        .polaroid-frame img {
+            width: 100%;
+            height: auto;
+            border-radius: 2px;
+            display: block;
         }
 
         .heart-divider {
@@ -93,9 +117,9 @@
             text-align: center;
         }
 
-        /* Right Side: Interactive CD Player */
+        /* Right Side: CD Player */
         .player-side {
-            flex: 1;
+            flex: 0.8;
             min-width: 300px;
             background: #fff;
             border-left: 2px dashed var(--accent-pink);
@@ -126,7 +150,7 @@
             width: 220px;
             height: 220px;
             border-radius: 50%;
-            background: #222; /* Vinyl record look */
+            background: #222;
             background-image: repeating-radial-gradient(circle, #333, #222 5px);
             display: flex;
             justify-content: center;
@@ -135,7 +159,12 @@
             cursor: pointer;
             position: relative;
             animation: spin 4s linear infinite;
+            animation-play-state: paused; /* Paused by default until played */
             transition: transform 0.3s ease;
+        }
+
+        .cd.playing {
+            animation-play-state: running;
         }
 
         .cd:hover {
@@ -187,22 +216,15 @@
             margin-top: 4px;
         }
 
-        .spotify-btn {
+        .status-text {
             margin-top: 15px;
-            display: inline-block;
-            background: #1ED760;
-            color: white;
-            text-decoration: none;
-            padding: 8px 20px;
-            border-radius: 20px;
             font-size: 0.85rem;
             font-weight: 600;
-            box-shadow: 0 4px 10px rgba(30, 215, 96, 0.3);
-            transition: transform 0.2s ease;
-        }
-
-        .spotify-btn:hover {
-            transform: translateY(-2px);
+            color: var(--dark-pink);
+            background: var(--bg-pink);
+            padding: 6px 16px;
+            border-radius: 20px;
+            display: inline-block;
         }
 
         /* Responsive Mobile Styles */
@@ -232,26 +254,56 @@ im just so thankful to us na we stayed after a lot of misunderstandings and figh
 i just want to remind you na iloveuuuusooomuchhh and i'll always be there for u no matter what happens to us, lagi tayong magkadikit para sa isa't isa
 
 thank you for the past year and a month of happiness and love with you, and also for a lot of support. thank you for being so kind to me, super understanding, and the most lovable girlfriend ever !!</div>
+            
+            <!-- Polaroid Frame for pic.jpg -->
+            <div class="polaroid-frame">
+                <img src="pic.jpg" alt="us">
+            </div>
+
             <div class="heart-divider">💌 ✨ 🧸</div>
         </div>
 
         <!-- Right Side Layout (CD Player) -->
         <div class="player-side">
             <div class="cd-player">
-                <!-- Clicking the spinning CD opens the link -->
-                <a href="https://open.spotify.com/track/6TBJkXHPhu3EsMk1bshwuI?si=e85cff19b50447c9" target="_blank" class="cd" title="Click to listen on Spotify!">
+                <!-- Hidden Audio Element -->
+                <audio id="monthsary-song" loop>
+                    <source src="https://files.catbox.moe/rbtgpe.mp3" type="audio/mpeg">
+                </audio>
+                
+                <!-- Interactive CD -->
+                <div class="cd" id="cd-button" title="Click to play/pause our song!">
                     <div class="album-cover"></div>
                     <div class="cd-center"></div>
-                </a>
+                </div>
             </div>
             
             <div class="song-info">
                 <div class="song-title">glue song</div>
                 <div class="artist">beabadoobee</div>
-                <a href="https://open.spotify.com/track/6TBJkXHPhu3EsMk1bshwuI?si=e85cff19b50447c9" target="_blank" class="spotify-btn">play on spotify 🎧</a>
+                <div class="status-text" id="status-display">click the cd to play 🎵</div>
             </div>
         </div>
     </div>
+
+    <!-- Audio Control Script -->
+    <script>
+        const audio = document.getElementById('monthsary-song');
+        const cdButton = document.getElementById('cd-button');
+        const statusDisplay = document.getElementById('status-display');
+
+        cdButton.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play();
+                cdButton.classList.add('playing');
+                statusDisplay.textContent = 'now playing... 🌸';
+            } else {
+                audio.pause();
+                cdButton.classList.remove('playing');
+                statusDisplay.textContent = 'paused 🎵';
+            }
+        });
+    </script>
 
 </body>
 </html>
